@@ -79,10 +79,18 @@ co2_emissions
 gapminder_data_2007 <- read_csv("data/gapminder_data.csv")%>%filter(year == 2007)%>%
   select(country, pop, lifeExp, gdpPercap)
 
-inner_join(gapminder_data_2007, co2_emissions, by = "country")
+joined_co2_pop<-inner_join(gapminder_data_2007, co2_emissions, by = "country")
 
 anti_join(co2_emissions, gapminder_data_2007, by = "country")
 
 anti_join(gapminder_data_2007, co2_emissions, by = "country")
 
 full_join(co2_emissions, gapminder_data_2007)%>%View()
+
+co2_emissions%>%
+  right_join(gapminder_data_2007)
+
+# write object to a csv
+
+write_csv(joined_co2_pop, file = "data/joined_co2_pop.csv")
+
