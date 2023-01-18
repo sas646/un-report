@@ -94,3 +94,48 @@ co2_emissions%>%
 
 write_csv(joined_co2_pop, file = "data/joined_co2_pop.csv")
 
+# Read back in the CSV file we just wrote
+
+joined_co2_pop <- read_csv("data/joined_co2_pop.csv")
+
+View(joined_co2_pop)
+
+# histogram for gdpPercap and LifeExp
+
+ggplot(joined_co2_pop) +
+  aes(x = gdpPercap) +
+  geom_histogram()
+
+ggplot(joined_co2_pop) +
+  aes(x = lifeExp) +
+  geom_histogram()
+
+gdp_co2_plot<-joined_co2_pop%>%
+  ggplot(aes(x = gdpPercap, y = per_capita_emissions))+
+  geom_point()+
+  geom_smooth(method = "lm", se = FALSE)+
+  labs(x = "GDP Per Capita", y = "CO2 Emissions Per Capita (metric tons)", title = "Comparing Per Capita CO2 Emissions and GDP")+
+  theme_classic()+
+  ggpubr::stat_regline_equation(aes(label = after_stat(rr.label)))
+
+ggsave(gdp_co2_plot, filename = "figures/gdp_vs_co2_plot.png", 
+       height = 4, width = 6, units = "in", dpi = 300)
+
+# package that helps make pub ready figs
+# can find all functions of a package with a vignette
+
+install.packages("ggpubr")
+
+
+
+# Find help pages on theme() function to change axis titles font and size
+
+?theme()
+
+ggplot(joined_co2_pop_csv) +
+  aes(x = gdpPercap) +
+  geom_histogram()+
+  theme(axis.title.y = element_text(size = 8, face = "italic"))+
+  theme(axis.title.x = element_text(size = 8, face = "italic"))
+
+        
